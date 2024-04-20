@@ -19,7 +19,7 @@ const weakerChoices: Record<string, string[]> = {
  * @returns scelta di gioco
  */
 export function getRandomChoice(availableChoices: Choice[] = choices):Choice {
-    return availableChoices[Math.floor(Math.random()*(choices.length-1))];
+    return availableChoices[Math.floor(Math.random()*(choices.length))];
 }
 
 /**
