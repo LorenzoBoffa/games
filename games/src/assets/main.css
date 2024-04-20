@@ -42,5 +42,22 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
-  
+  .primary-button {
+    background-color: #0c0c0c;
+    color: #fff;
+    border: 1px solid #fff;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    padding: 0.3rem 1rem !important;
+    height: 37px;
+    border-radius: 10px;
+    margin: 0 5px;
+  }
+
+  .primary-button:hover {
+    background-color: #fff; 
+    color: #0c0c0c;
+  }
   

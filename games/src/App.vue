@@ -4,66 +4,36 @@
     <h1 class="title">Rock, Paper, Scissors</h1>
     <p class="title">Il primo che arriva a {{ targetPoints }} punti vince!</p>
     
-    <div class="players">
-      <div class="player">
-        <p class="player-name">Giocatore 1</p>
-        <div :class="{ 'card-choice': true, 'win': player1Wins }">
-          <img v-if="choice1 ":src="player1Wins ? winIconPaths[choice1] : iconPaths[choice1]" class="icon" /> 
-        </div>
-        <h3 class="player-score">{{ player1Pts }} pt</h3>
-      </div>
-      
-      <p>vs</p>
-      
-      <div class="player">
-        <p class="player-name">Avversario</p>
-        <div :class="{ 'card-choice': true, 'win': player2Wins }">
-          <img v-if="choice2 ":src="player2Wins ? winIconPaths[choice2] : iconPaths[choice2]" class="icon" /> 
-        </div>
-        <h3 class="player-score">{{ player2Pts }} pt</h3>
-      </div>
-    </div>
+   <GameRoundChoices 
+      :choice1="choice1" 
+      :choice2="choice2" 
+      :player1Wins="player1Wins" 
+      :player2Wins="player2Wins" 
+      :player1-points="player1Pts" 
+      :player2-points="player2Pts"
+      ></GameRoundChoices>
 
-    <div v-if="player1IsHuman" class="buttons">
-      <button v-for="(choice, idx) in choices" :key="idx" @click="playRound(choice)" class="icon-button">
-        <img :src="iconPaths[choice]" class="icon" />  
-      </button>
-    </div>
-    <div v-else class="buttons">
-      <button @click="playRound()" class="icon-button">
-        <img :src="swordsIcon" class="icon" />  
-      </button>
-    </div>
-
-    <div class="primary-button-container">
-      <button @click="player1IsHuman= !player1IsHuman" class="primary-button">
-        <h3>
-          {{player1IsHuman ? 'Gioca come computer' : 'Gioca come umano'}}
-        </h3> 
-      </button>
-    </div>
+   <GameControls :available-choices="choices" @user-pick="playRound"></GameControls>
   </div>
 
   <div v-else class="title">
-    <h1>{{player1Pts > player2Pts ? 'Hai vinto!' : 'Oh no! Hai perso!'}}</h1>
-    <h2>{{ `${player1Pts} - ${player2Pts}`}} </h2>
-     <img :src="player1Pts > player2Pts ? winMeme : lostMeme" width="50%"></img>
-     <div class="primary-button-container">  
-        <button @click="resetGame()" class="primary-button">
-          <h2>Riprova</h2>
-        </button>
-      </div>
+      <GameFinalResult 
+      :player1-points="player1Pts"
+      :player2-points="player2Pts"
+      @reset-game="resetGame()"
+      ></GameFinalResult>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { PlayState, choices, getPlayResult, getRandomChoice, type Choice } from './helpers/gameModel';
-import { iconPaths, winIconPaths, swordsIcon, lostMeme, winMeme } from './assets/sources'
+import GameControls from './components/GameControls.vue';
+import GameRoundChoices from './components/GameRoundChoices.vue';
+import GameFinalResult from './components/GameFinalResult.vue';
 
 const choice1 = ref<Choice>();
 const choice2 = ref<Choice>();
-const player1IsHuman = ref(true);
 const player1Pts = ref(0);
 const player2Pts = ref(0);
 const player1Wins = ref(false);
@@ -71,6 +41,7 @@ const player2Wins = ref(false);
 
 const targetPoints = 3;
 const gameEnded = ref(false);
+
 
 /**
  * Monitora quando un giocaore vince la partita
@@ -84,7 +55,8 @@ watch([player1Pts, player2Pts], ([pt1, pt2]) => {
  * Gioca un round.
  * @param choice scelta del giocatore 1. Se undefined viene scelta in automatico (es modalita computer)
  */
-function playRound(choice: Choice = getRandomChoice()) {
+function playRound(choice: Choice | undefined) {
+  if (!choice) choice = getRandomChoice();
   const opponentChoice = getRandomChoice(); 
 
   choice1.value = choice;
@@ -202,4 +174,5 @@ function resetGame(){
   border: 1px solid #fff;
   border-radius: 10px;
 }
+
 </style>
