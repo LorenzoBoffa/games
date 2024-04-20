@@ -13,7 +13,7 @@
       :player2-points="player2Pts"
       ></GameRoundChoices>
 
-   <GameControls :available-choices="choices" @user-pick="playRound"></GameControls>
+   <GameControls :available-choices="choicesExtended" @user-pick="playRound"></GameControls>
   </div>
 
   <div v-else class="title">
@@ -27,7 +27,7 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import { PlayState, choices, getPlayResult, getRandomChoice, type Choice } from './helpers/gameModel';
+import { PlayState, choices, choicesExtended, getPlayResult, getRandomChoice, type Choice } from './helpers/gameModel';
 import GameControls from './components/GameControls.vue';
 import GameRoundChoices from './components/GameRoundChoices.vue';
 import GameFinalResult from './components/GameFinalResult.vue';
@@ -41,7 +41,6 @@ const player2Wins = ref(false);
 
 const targetPoints = 3;
 const gameEnded = ref(false);
-
 
 /**
  * Monitora quando un giocaore vince la partita

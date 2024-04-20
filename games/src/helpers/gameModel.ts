@@ -1,5 +1,6 @@
-export type Choice = "rock" | "paper" | "scissors";
+export type Choice = "rock" | "paper" | "scissors" | "lizard" | "spock" ;
 export const choices: Choice[] = ["rock", "paper", "scissors"];
+export const choicesExtended: Choice[] = ["rock", "paper", "scissors", "lizard", "spock"];
 
 export enum PlayState {
     Win = "win",
@@ -8,9 +9,11 @@ export enum PlayState {
 }
 
 const weakerChoices: Record<string, string[]> = {
-    rock : ["scissors"],
-    paper: ["rock"],
-    scissors: ["paper"]
+    rock : ["scissors", "lizard"],
+    paper: ["rock", "spock"],
+    scissors: ["paper", "lizard"],
+    lizard: ["paper", "spock"],
+    spock: ["scissors", "rock"]
 }
 
 /**
