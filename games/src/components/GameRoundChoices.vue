@@ -58,8 +58,8 @@
   }
   
   .icon {
-    width: 42px; 
-    height: 42px;
+    width: 84px; 
+    height: 84px;
     padding: 20px;
   }
   
@@ -73,8 +73,8 @@
     align-items: center;
     justify-content: center;
     margin: 10px;
-    height: 120px;
-    width: 120px;
+    height: 160px;
+    width: 160px;
     border-radius: 10px;
   }
   

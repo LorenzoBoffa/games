@@ -25,7 +25,8 @@ const winIconPaths = {
   lizard: lizardWinIcon,
   spock: spockWinIcon
 };
-const lostMeme = "https://media.tenor.com/kkGmDDdulUkAAAAj/you-lost-mo%27nique.gif";
+const lostMeme = "https://media.makeameme.org/created/you-lost-590c80.jpg";
 const winMeme = "https://media2.giphy.com/media/eoxomXXVL2S0E/giphy.gif";
+const winMemeNextLevel = "https://www.wordstream.com/wp-content/uploads/2021/07/facebook-funnel-next-level.jpg";
 
-export {iconPaths, winIconPaths, swordsIcon, lostMeme, winMeme}
+export {iconPaths, winIconPaths, swordsIcon, lostMeme, winMeme, winMemeNextLevel}

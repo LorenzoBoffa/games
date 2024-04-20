@@ -1,7 +1,8 @@
 <template>
-
+  <div v-if="!showFooBarComponent">
   <div v-if="!gameEnded">
-    <h1 class="title">Rock, Paper, Scissors</h1>
+    <h2 class="title">Livello {{ gameLevel }}</h2>
+    <h1 class="title">{{ gameLevel === 1 ? 'Rock, Paper, Scissors' : gameLevel === 2 ? 'Rock, Paper, Scissors, Lizard, Spock' : ''}}</h1>
     <p class="title">Il primo che arriva a {{ targetPoints }} punti vince!</p>
     
    <GameRoundChoices 
@@ -11,23 +12,37 @@
       :player2Wins="player2Wins" 
       :player1-points="player1Pts" 
       :player2-points="player2Pts"
-      ></GameRoundChoices>
+      />
 
-   <GameControls :available-choices="choicesExtended" @user-pick="playRound"></GameControls>
+   <GameControls 
+      :available-choices="gameLevel === 1 ? choices : gameLevel === 2 ? choicesExtended : choices"
+      @user-pick="playRound"/>
   </div>
 
-  <div v-else class="title">
-      <GameFinalResult 
-      :player1-points="player1Pts"
-      :player2-points="player2Pts"
-      @reset-game="resetGame()"
-      ></GameFinalResult>
-  </div>
+  <GameFinalResult v-else 
+  :player1-points="player1Pts"
+  :player2-points="player2Pts"
+  :is-game-finished="gameLevel === 2"
+  @restart-game="restartGame()"
+  @next-level="goToNextLevel()"
+  @get-foo-bar="showFooBarComponent = true;"
+  />
+</div>
+
+<div v-if = "showFooBarComponent" class="foobar">
+  <p v-for="(item, index) in getFooBar()" :key="index">{{ item }}</p>
+  <button @click="restartGame(); showFooBarComponent = false;" class="primary-button">
+    <h3>
+      Ricomincia
+    </h3> 
+  </button>
+</div>
 </template>
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { PlayState, choices, choicesExtended, getPlayResult, getRandomChoice, type Choice } from './helpers/gameModel';
+import { getFooBar } from './helpers/foobar'
 import GameControls from './components/GameControls.vue';
 import GameRoundChoices from './components/GameRoundChoices.vue';
 import GameFinalResult from './components/GameFinalResult.vue';
@@ -41,13 +56,15 @@ const player2Wins = ref(false);
 
 const targetPoints = 3;
 const gameEnded = ref(false);
+const gameLevel = ref(1);
+const showFooBarComponent = ref(false);
 
 /**
  * Monitora quando un giocaore vince la partita
  */
 watch([player1Pts, player2Pts], ([pt1, pt2]) => {
   gameEnded.value = pt1 >= targetPoints || pt2 >= targetPoints ? true : false;
-});
+}, {immediate: true});
 
 
 /**
@@ -89,9 +106,32 @@ function resetGame(){
   player2Pts.value = 0;
   gameEnded.value = false;
 }
+
+/**
+ * Passa al livello successivo
+ */
+function goToNextLevel(){
+  if (gameLevel.value !== 2){
+    gameLevel.value++;
+  }
+  resetGame();
+}
+
+function restartGame(){
+  gameLevel.value = 1;
+  resetGame();
+}
+
+
 </script>
 
 <style scoped>
+.foobar {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 .title {
   text-align: center;
   margin-bottom: 20px;
