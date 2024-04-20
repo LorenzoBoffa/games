@@ -22,9 +22,14 @@
       </div>
     </div>
 
-    <div class="buttons">
-      <button v-for="(choice, idx) in choices" :key="idx" @click="player1IsHuman ? playRound(choice) : playRound()">{{ choice }}</button>
+    <div v-if="player1IsHuman" class="buttons">
+      <button v-for="(choice, idx) in choices" :key="idx" @click="playRound(choice)">{{ choice }}</button>
     </div>
+    <div v-else class="buttons">
+      <button @click="playRound()">Gioca</button>
+    </div>
+
+    <button @click="player1IsHuman= !player1IsHuman" class="role-button">{{player1IsHuman ? 'Gioca come computer' : 'Gioca come umano'}}</button>
   </div>
 </template>
 
@@ -120,6 +125,16 @@ function playRound(choice: Choice = getRandomChoice()) {
   margin-top: 20px;
 }
 
+.role-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto; /* Center horizontally */
+}
+
+
 button {
   background-color: #0c0c0c;
   color: #fff;
@@ -138,4 +153,6 @@ button:hover {
   background-color: #fff; 
   color: #0c0c0c;
 }
+
+
 </style>
