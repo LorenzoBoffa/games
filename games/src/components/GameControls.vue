@@ -1,6 +1,6 @@
 <template>
     <div>
-      <div v-if="humanMode" class="container">
+      <div v-if="humanMode" class="buttons">
         <button v-for="(choice, idx) in availableChoices" :key="idx" @click="emitUserChoice(choice)" class="icon-button">
           <img :src="iconPaths[choice]" class="icon" />  
         </button>
@@ -11,7 +11,7 @@
         </button>
       </div>
   
-      <div class="container">
+      <div class="buttons" style="margin-bottom: none;">
         <button @click="humanMode = !humanMode" class="primary-button">
           <h3>
             {{ humanMode ? 'Gioca come computer' : 'Gioca come umano' }}
@@ -36,7 +36,7 @@
   
   /**
    * Emit della scelta al parent component
-   * @param choice scelta del giocatore 1, se computer mode è undefined
+   * @param choice scelta del giocatore 1, se computer mode emitta un undefined
    */
   function emitUserChoice(choice: Choice | undefined) {
     emit('userPick', choice);
@@ -44,22 +44,14 @@
   
   </script>
   <style scoped>
-
    .buttons{
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    margin-bottom: 10px;
    }
-   
-   .container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 10px;
-  }
-  
-  .icon {
+
+   .icon {
     width: 42px; 
     height: 42px;
     padding: 20px;
@@ -74,7 +66,15 @@
   
   .icon-button:hover .icon {
     border: 1px solid #fff;
+    background-color: var(--color-black-soft);
     border-radius: 10px;
-
   }
+
+  @media only screen and (max-width: 440px) {
+  .icon {
+    width: 32px;
+    height: 32px;
+    padding: 10px;
+  }
+}
   </style>

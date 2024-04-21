@@ -1,16 +1,20 @@
-import rockIcon from '@/assets/rock.svg';
-import paperIcon from '@/assets/paper.svg';
-import scissorsIcon from '@/assets/scissors.svg';
-import lizardIcon from '@/assets/lizard.svg';
-import spockIcon from '@/assets/spock.svg';
-import rockWinIcon from '@/assets/rock-win.svg';
-import paperWinIcon from '@/assets/paper-win.svg';
-import scissorsWinIcon from '@/assets/scissors-win.svg';
-import lizardWinIcon from '@/assets/lizard-win.svg';
-import spockWinIcon from '@/assets/spock-win.svg';
-import swordsIcon from '@/assets/swords.svg';
+import rockIcon from '@/assets/icons/rock.svg';
+import paperIcon from '@/assets/icons/paper.svg';
+import scissorsIcon from '@/assets/icons/scissors.svg';
+import lizardIcon from '@/assets/icons/lizard.svg';
+import spockIcon from '@/assets/icons/spock.svg';
+import rockWinIcon from '@/assets/icons/rock-win.svg';
+import paperWinIcon from '@/assets/icons/paper-win.svg';
+import scissorsWinIcon from '@/assets/icons/scissors-win.svg';
+import lizardWinIcon from '@/assets/icons/lizard-win.svg';
+import spockWinIcon from '@/assets/icons/spock-win.svg';
+import swordsIcon from '@/assets/icons/swords.svg';
+import type { Choice } from '@/helpers/gameModel';
 
- const iconPaths = {
+/**
+ * Mappa le possibili scelte di gioco alle icone
+ */
+ const iconPaths: Record<Choice, string> = {
   rock: rockIcon,
   paper: paperIcon,
   scissors: scissorsIcon,
@@ -18,13 +22,17 @@ import swordsIcon from '@/assets/swords.svg';
   spock: spockIcon
 };
 
-const winIconPaths = {
+/**
+ * Mappa le possibili scelte di gioco alle icone vincenti
+ */
+const winIconPaths: Record<Choice, string> = {
   rock: rockWinIcon,
   paper: paperWinIcon,
   scissors: scissorsWinIcon,
   lizard: lizardWinIcon,
   spock: spockWinIcon
 };
+
 const lostMeme = "https://media.makeameme.org/created/you-lost-590c80.jpg";
 const winMeme = "https://media2.giphy.com/media/eoxomXXVL2S0E/giphy.gif";
 const winMemeNextLevel = "https://www.wordstream.com/wp-content/uploads/2021/07/facebook-funnel-next-level.jpg";

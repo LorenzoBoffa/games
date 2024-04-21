@@ -2,13 +2,19 @@ export type Choice = "rock" | "paper" | "scissors" | "lizard" | "spock" ;
 export const choices: Choice[] = ["rock", "paper", "scissors"];
 export const choicesExtended: Choice[] = ["rock", "paper", "scissors", "lizard", "spock"];
 
+/**
+ * Possibili esiti 
+ */
 export enum PlayState {
     Win = "win",
     Lose = "lose",
     Draw = "draw"
 }
 
-const weakerChoices: Record<string, string[]> = {
+/**
+ * Mappa ogni singola scelta con le scelte piu deboli rispetto a lei
+ */
+const weakerChoices: Record<Choice, Choice[]> = {
     rock : ["scissors", "lizard"],
     paper: ["rock", "spock"],
     scissors: ["paper", "lizard"],

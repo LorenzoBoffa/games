@@ -1,51 +1,61 @@
 <template>
-  <div v-if="!showFooBarComponent">
-  <div v-if="!gameEnded">
-    <h2 class="title">Livello {{ gameLevel }}</h2>
-    <h1 class="title">{{ gameLevel === 1 ? 'Rock, Paper, Scissors' : gameLevel === 2 ? 'Rock, Paper, Scissors, Lizard, Spock' : ''}}</h1>
-    <p class="title">Il primo che arriva a {{ targetPoints }} punti vince!</p>
-    
-   <GameRoundChoices 
-      :choice1="choice1" 
-      :choice2="choice2" 
-      :player1Wins="player1Wins" 
-      :player2Wins="player2Wins" 
-      :player1-points="player1Pts" 
-      :player2-points="player2Pts"
-      />
+  <div class="prevent-select" :class="!showFooBarComponent ? 'page' : ''">
+      <div v-if="!showFooBarComponent">
+            <div v-if="!gameEnded">
+              <div class="title-container">
+                <h2>Livello {{ gameLevel }}</h2>
+                <h1>{{ gameLevel === 1 ? 'Rock, Paper, Scissors' : gameLevel === 2 ? 'Rock, Paper, Scissors, Lizard, Spock' : ''}}</h1>
+                <p>Il primo che arriva a {{ targetPoints }} punti vince!</p>
+              </div>
 
-   <GameControls 
-      :available-choices="gameLevel === 1 ? choices : gameLevel === 2 ? choicesExtended : choices"
-      @user-pick="playRound"/>
+              <GameRoundChoices 
+                  :choice1="choice1" 
+                  :choice2="choice2" 
+                  :player1Wins="player1Wins" 
+                  :player2Wins="player2Wins" 
+                  :player1-points="player1Pts" 
+                  :player2-points="player2Pts"
+                  />
+
+              <GameControls 
+                  :available-choices="gameLevel === 1 ? choices : gameLevel === 2 ? choicesExtended : choices"
+                  @user-pick="playRound"/>
+            </div>
+
+            
+            <GameFinalResult v-else 
+            :player1-points="player1Pts"
+            :player2-points="player2Pts"
+            :is-game-finished="gameLevel === 2"
+            @restart-game="restartGame()"
+            @next-level="goToNextLevel()"
+            @get-foo-bar="showFooBarComponent = true;"
+            />
+      </div>
+
+
+  <div v-else class="foobar-container">
+    <p v-for="(item, index) in getFooBar()" :key="index">{{ item }}</p>
+    <button @click="restartGame(); showFooBarComponent = false;" class="primary-button">
+      <h3 >
+        Ricomincia
+      </h3> 
+    </button>
   </div>
-
-  <GameFinalResult v-else 
-  :player1-points="player1Pts"
-  :player2-points="player2Pts"
-  :is-game-finished="gameLevel === 2"
-  @restart-game="restartGame()"
-  @next-level="goToNextLevel()"
-  @get-foo-bar="showFooBarComponent = true;"
-  />
-</div>
-
-<div v-if = "showFooBarComponent" class="foobar">
-  <p v-for="(item, index) in getFooBar()" :key="index">{{ item }}</p>
-  <button @click="restartGame(); showFooBarComponent = false;" class="primary-button">
-    <h3>
-      Ricomincia
-    </h3> 
-  </button>
 </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { defineAsyncComponent, ref, watch } from 'vue';
 import { PlayState, choices, choicesExtended, getPlayResult, getRandomChoice, type Choice } from './helpers/gameModel';
 import { getFooBar } from './helpers/foobar'
 import GameControls from './components/GameControls.vue';
 import GameRoundChoices from './components/GameRoundChoices.vue';
-import GameFinalResult from './components/GameFinalResult.vue';
+
+// Import components
+const GameFinalResult = defineAsyncComponent(
+  () => import('./components/GameFinalResult.vue'),
+);
 
 const choice1 = ref<Choice>();
 const choice2 = ref<Choice>();
@@ -60,7 +70,7 @@ const gameLevel = ref(1);
 const showFooBarComponent = ref(false);
 
 /**
- * Monitora quando un giocaore vince la partita
+ * Monitora quando un giocatore vince la partita
  */
 watch([player1Pts, player2Pts], ([pt1, pt2]) => {
   gameEnded.value = pt1 >= targetPoints || pt2 >= targetPoints ? true : false;
@@ -117,101 +127,34 @@ function goToNextLevel(){
   resetGame();
 }
 
+/**
+ * Ricomincia il gioco dal primo livello
+ */
 function restartGame(){
   gameLevel.value = 1;
   resetGame();
 }
 
-
 </script>
 
 <style scoped>
-.foobar {
+.page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100vh;
+}
+
+.foobar-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+ 
 }
-.title {
+.title-container {
   text-align: center;
-  margin-bottom: 20px;
-}
-
-.players, .buttons, .primary-button-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.player {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 0 20px;
-}
-
-.player-name {
-  margin: 0;
-}
-
-.icon {
-  width: 42px; 
-  height: 42px;
-  padding: 20px;
-}
-
-.card-choice {
-  background-color: #0c0c0c;
-  color: #fff;
-  border: 4px solid #fff;
-  text-align: center;
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 10px;
-  height: 120px;
-  width: 120px;
-  border-radius: 10px;
-}
-
-.card-choice.win {
-  background-color: #fff;
-  color: #0c0c0c;
-}
-
-.player-score {
-  margin: 5px 0 0;
-}
-
-.primary-button {
-  background-color: #0c0c0c;
-  color: #fff;
-  border: 1px solid #fff;
-  display:flex;
-  justify-content: center;
-  align-items: center;
-  text-decoration: none;
-  padding: 0.3rem 1rem !important;
-  height: 37px;
-  border-radius: 10px;
-  margin: 0 5px;
-}
-.primary-button:hover {
-  background-color: #fff; 
-  color: #0c0c0c;
-}
-
-.icon-button {
-  background-color: transparent; 
-  border: none; 
-  cursor: pointer; 
-  padding: 0; 
-}
-
-.icon-button:hover .icon {
-  border: 1px solid #fff;
-  border-radius: 10px;
+  margin-bottom: 50px;
 }
 
 </style>

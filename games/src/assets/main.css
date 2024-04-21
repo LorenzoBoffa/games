@@ -1,20 +1,13 @@
 :root {
-    --color-white: #ffffff;
-    --color-white-soft: #b4b4b4;
-  
+    --color-white: #ffffff;  
     --color-black: #000000;
-    --color-black-soft: #131313;
-  }
-  
-  /* semantic color variables for this project */
-  :root {
+    --color-black-soft: #292929;
+
     --color-background: var(--color-black);
     --color-heading: var(--color-white);
     --color-text: var(--color-white);
   }
-  
 
-  
   body {
     min-height: 100vh;
     color: var(--color-text);
@@ -22,7 +15,6 @@
     transition:
       color 0.5s,
       background-color 0.5s;
-    line-height: 1.6;
     font-family:
       Inter,
       -apple-system,
@@ -36,10 +28,28 @@
       'Droid Sans',
       'Helvetica Neue',
       sans-serif;
-    font-size: 15px;
+
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    
+  }
+
+  h1{
+    font-size: 32px;
+    margin: none;
+    line-height: normal;
+    padding: none;
+  }
+  
+  h2{
+    font-size: 24px;
+    margin: none;
+    padding: none;
+  }
+
+  p {
+    font-size: 16px;
   }
 
   .primary-button {
@@ -61,3 +71,8 @@
     color: #0c0c0c;
   }
   
+  .prevent-select {
+    -webkit-user-select: none; 
+    -ms-user-select: none; 
+    user-select: none; 
+  }

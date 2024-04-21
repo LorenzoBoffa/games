@@ -1,5 +1,5 @@
 <template>
-  <div class="title">
+  <div style="text-align: center;">
     <h1>{{props.player1Points > props.player2Points ? 'Hai vinto!' : 'Oh no! Hai perso!'}}</h1>
       <h2>{{ `${props.player1Points} - ${props.player2Points}`}} </h2>
       <img :src="props.player1Points > props.player2Points ? (props.isGameFinished ? winMeme : winMemeNextLevel) : lostMeme"></img>
@@ -10,7 +10,7 @@
           <button v-if="props.player1Points > props.player2Points && !isGameFinished" @click="emit('nextLevel')" class="primary-button">
             <h2>Livello Successivo</h2>
           </button>
-          <button v-if="props.player1Points > props.player2Points && isGameFinished" @click="emit('getFooBar')" class="primary-button">
+          <button v-if="props.player1Points > props.player2Points && isGameFinished" @click="emit('getFooBar')" class="primary-button ">
             <h1>Riscatta il premio</h1>
           </button>
         </div>
@@ -32,8 +32,8 @@ const emit = defineEmits(['restartGame', 'nextLevel', 'getFooBar']);
 
 <style scoped>
 img{
-    width:50%;
-    max-width:600px;
+    
+    max-height:300px;
 }
 
 .primary-button {
@@ -54,10 +54,11 @@ img{
   color: #0c0c0c;
 }
 
-.players, .buttons, .primary-button-container {
+ .buttons{
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 20px;
 }
 
 

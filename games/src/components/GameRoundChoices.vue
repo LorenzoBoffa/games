@@ -1,9 +1,9 @@
 <template>
-    <div class="players">
+<div class="results-container">
       <div class="player">
-        <p class="player-name">Giocatore 1</p>
+        <p style="margin: 0">Giocatore 1</p>
         <div :class="{ 'card-choice': true, 'win': props.player1Wins }">
-          <img v-if="props.choice1 ":src="props.player1Wins ? winIconPaths[props.choice1] : iconPaths[props.choice1]" class="icon" /> 
+          <img v-if="props.choice1" :src="props.player1Wins ? winIconPaths[props.choice1] : iconPaths[props.choice1]" class="icon" /> 
         </div>
         <h3 class="player-score">{{ props.player1Points }} pt</h3>
       </div>
@@ -11,13 +11,18 @@
       <p>vs</p>
       
       <div class="player">
-        <p class="player-name">Avversario</p>
+        <p style="margin: 0">Avversario</p>
         <div :class="{ 'card-choice': true, 'win': props.player2Wins }">
           <img v-if="props.choice2 ":src="props.player2Wins ? winIconPaths[props.choice2] : iconPaths[props.choice2]" class="icon" /> 
         </div>
         <h3 class="player-score">{{ props.player2Points }} pt</h3>
       </div>
     </div>
+
+    <div class="results-container">
+    <h2 v-if="choice1 && choice2" > {{ !props.player1Wins && !props.player2Wins ? 'Pari!' : props.player1Points ? 'Vinto!' : 'Perso' }} </h2>
+    <h2 v-else> Scegli una mossa </h2>
+  </div>
   </template>
   
   <script setup lang="ts">
@@ -40,7 +45,7 @@
     margin-bottom: 20px;
   }
   
-  .players {
+  .results-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -50,11 +55,11 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 0 20px;
+    margin: 0 10px;
   }
-  
-  .player-name {
-    margin: 0;
+
+  .player-score {
+    margin: 5px 0px 0px 0px;
   }
   
   .icon {
@@ -73,8 +78,10 @@
     align-items: center;
     justify-content: center;
     margin: 10px;
-    height: 160px;
-    width: 160px;
+    width: calc(50vw - 50px);
+    height: calc(50vw - 50px);
+    max-height: 160px;
+    max-width: 160px;
     border-radius: 10px;
   }
   
@@ -83,8 +90,13 @@
     color: #0c0c0c;
   }
   
-  .player-score {
-    margin: 5px 0 0;
+  @media only screen and (max-width: 440px) {
+  .icon {
+    width: 42px;
+    height: 42px;
+    padding: 10px;
   }
+}
+
   </style>
   
