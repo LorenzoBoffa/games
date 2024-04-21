@@ -2,24 +2,24 @@
   <div class="prevent-select" :class="!showFooBarComponent ? 'page' : ''">
       <div v-if="!showFooBarComponent">
             <div v-if="!gameEnded">
-              <div class="title-container">
-                <h2>Livello {{ gameLevel }}</h2>
-                <h1>{{ gameLevel === 1 ? 'Rock, Paper, Scissors' : gameLevel === 2 ? 'Rock, Paper, Scissors, Lizard, Spock' : ''}}</h1>
-                <p>Il primo che arriva a {{ targetPoints }} punti vince!</p>
-              </div>
+                <div class="title-container">
+                  <h2>Livello {{ gameLevel }}</h2>
+                  <h1>{{ gameLevel === 1 ? 'Rock, Paper, Scissors' : gameLevel === 2 ? 'Rock, Paper, Scissors, Lizard, Spock' : ''}}</h1>
+                  <p>Il primo che arriva a {{ targetPoints }} punti vince!</p>
+                </div>
 
-              <GameRoundChoices 
-                  :choice1="choice1" 
-                  :choice2="choice2" 
-                  :player1Wins="player1Wins" 
-                  :player2Wins="player2Wins" 
-                  :player1-points="player1Pts" 
-                  :player2-points="player2Pts"
-                  />
+                <GameRoundChoices 
+                    :choice1="choice1" 
+                    :choice2="choice2" 
+                    :player1Wins="player1Wins" 
+                    :player2Wins="player2Wins" 
+                    :player1-points="player1Pts" 
+                    :player2-points="player2Pts"
+                    />
 
-              <GameControls 
-                  :available-choices="gameLevel === 1 ? choices : gameLevel === 2 ? choicesExtended : choices"
-                  @user-pick="playRound"/>
+                <GameControls 
+                    :available-choices="gameLevel === 1 ? choices : gameLevel === 2 ? choicesExtended : choices"
+                    @user-pick="playRound"/>
             </div>
 
             
@@ -70,7 +70,7 @@ const gameLevel = ref(1);
 const showFooBarComponent = ref(false);
 
 /**
- * Monitora quando un giocatore vince la partita
+ * Watch when a player wins the game
  */
 watch([player1Pts, player2Pts], ([pt1, pt2]) => {
   gameEnded.value = pt1 >= targetPoints || pt2 >= targetPoints ? true : false;
@@ -78,8 +78,10 @@ watch([player1Pts, player2Pts], ([pt1, pt2]) => {
 
 
 /**
- * Gioca un round.
- * @param choice scelta del giocatore 1. Se undefined viene scelta in automatico (es modalita computer)
+ * Play a round:
+ * - a choice is provided in "human" mode
+ * - undefined is provided in "computer" mode
+ * @param choice choice of player 1. Player 2 is considered to be a computer
  */
 function playRound(choice: Choice | undefined) {
   if (!choice) choice = getRandomChoice();
@@ -105,7 +107,7 @@ function playRound(choice: Choice | undefined) {
 }
 
 /**
- * Resetta le variabili di gioco
+ * Resets game variables
  */
 function resetGame(){
   choice1.value = undefined;
@@ -118,7 +120,7 @@ function resetGame(){
 }
 
 /**
- * Passa al livello successivo
+ * Increases the level number
  */
 function goToNextLevel(){
   if (gameLevel.value !== 2){
@@ -128,7 +130,7 @@ function goToNextLevel(){
 }
 
 /**
- * Ricomincia il gioco dal primo livello
+ * Restarts the game from the first level
  */
 function restartGame(){
   gameLevel.value = 1;

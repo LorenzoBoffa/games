@@ -3,7 +3,7 @@ export const choices: Choice[] = ["rock", "paper", "scissors"];
 export const choicesExtended: Choice[] = ["rock", "paper", "scissors", "lizard", "spock"];
 
 /**
- * Possibili esiti 
+ * Possible states of a single play
  */
 export enum PlayState {
     Win = "win",
@@ -12,7 +12,7 @@ export enum PlayState {
 }
 
 /**
- * Mappa ogni singola scelta con le scelte piu deboli rispetto a lei
+ * Associate every single Choice with the weaker ones
  */
 const weakerChoices: Record<Choice, Choice[]> = {
     rock : ["scissors", "lizard"],
@@ -23,19 +23,19 @@ const weakerChoices: Record<Choice, Choice[]> = {
 }
 
 /**
- * Seleziona casualmente una scelta tra le disponibili
- * @param availableChoices scelte di gioco disponibili. Default rock, paper, scissors 
- * @returns scelta di gioco
+ * Selects casually a choice among the available ones
+ * @param availableChoices available game choices. Default is rock, paper, scissors 
+ * @returns a random game choice
  */
 export function getRandomChoice(availableChoices: Choice[] = choices):Choice {
     return availableChoices[Math.floor(Math.random()*(choices.length))];
 }
 
 /**
- * Calcola l'esito di gioco date due scelte
- * @param choice1 scelta del giocatore 1, calcolata random se non fornita
- * @param choice2 scelta del giocatore 2, calcolata random se non fornita
- * @param weakerChoicesRecord record con le scelte perdenti per ciascuna mossa disponibile
+ * Calculate result for a single play given two choices
+ * @param choice1 player 1 choice, computed as random if not provided
+ * @param choice2 player 1 choice, computed as random if not provided
+ * @param weakerChoicesRecord record mapping choiches to their weaker choices. Default one are the classic rules.
  * @returns 
  */
 export function getPlayResult(choice1: Choice = getRandomChoice(), choice2: Choice = getRandomChoice(), weakerChoicesRecord = weakerChoices): PlayState{   
@@ -43,4 +43,3 @@ export function getPlayResult(choice1: Choice = getRandomChoice(), choice2: Choi
     else if (weakerChoicesRecord[choice1].includes(choice2)) return PlayState.Win
     else return PlayState.Lose
 }
-

@@ -20,7 +20,7 @@
     </div>
 
     <div class="results-container">
-    <h2 v-if="choice1 && choice2" > {{ !props.player1Wins && !props.player2Wins ? 'Pari!' : props.player1Points ? 'Vinto!' : 'Perso' }} </h2>
+    <h2 v-if="choice1 && choice2" > {{ !props.player1Wins && !props.player2Wins ? 'Pari!' : props.player1Wins ? 'Vinto!' : 'Perso' }} </h2>
     <h2 v-else> Scegli una mossa </h2>
   </div>
   </template>
