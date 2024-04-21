@@ -22,7 +22,7 @@ npm run dev
 ```sh
 npm run test:unit
 ```
-### Navigating the project
+## Navigating the project
 Navigate to: "games/src/helpers" to find:
 - foobar.ts: containing methods for exercise 1.
 - gameModel.ts: containing basic definitions for exercise 2.
