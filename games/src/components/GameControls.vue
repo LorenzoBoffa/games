@@ -1,7 +1,7 @@
 <template>
     <div>
       <div v-if="humanMode" class="buttons">
-        <button v-for="(choice, idx) in availableChoices" :key="idx" @click="emitUserChoice(choice)" class="icon-button">
+        <button v-for="(choice, idx) in props.availableChoices" :key="idx" @click="emitUserChoice(choice)" class="icon-button">
           <img :src="iconPaths[choice]" class="icon" />  
         </button>
       </div>
@@ -35,8 +35,8 @@
   const humanMode = ref<boolean>(true);
   
   /**
-   * Emit della scelta al parent component
-   * @param choice scelta del giocatore 1, se computer mode emitta un undefined
+   * Emits user choice to parent component
+   * @param choice player 1 choice, if undefined means the player is a computer
    */
   function emitUserChoice(choice: Choice | undefined) {
     emit('userPick', choice);

@@ -9,12 +9,13 @@
                 </div>
 
                 <GameRoundChoices 
-                    :choice1="choice1" 
-                    :choice2="choice2" 
-                    :player1Wins="player1Wins" 
-                    :player2Wins="player2Wins" 
-                    :player1-points="player1Pts" 
-                    :player2-points="player2Pts"
+                    :right-icon-src="rightIconSrc"
+                    :leftIconSrc="leftIconSrc"
+                    :leftHighlighted="player1Wins"
+                    :rightHighlighted="player2Wins"
+                    :playStateMessage="!player1Wins && !player2Wins ? 'Pari!' : player1Wins ? 'Vinto!' : 'Perso'"
+                    :player1Points="player1Pts"
+                    :player2Points="player2Pts"
                     />
 
                 <GameControls 
@@ -24,12 +25,11 @@
 
             
             <GameFinalResult v-else 
-            :player1-points="player1Pts"
-            :player2-points="player2Pts"
-            :is-game-finished="gameLevel === 2"
-            @restart-game="restartGame()"
-            @next-level="goToNextLevel()"
-            @get-foo-bar="showFooBarComponent = true;"
+            :title="player1Pts > player2Pts ? 'Hai vinto!' : 'Oh no! Hai perso!' "
+            :subtitle="`${player1Pts} - ${player2Pts}`"
+            :button-title="finalButtonTitle"
+            :image-src="finalImageSrc"
+            @handle-action="handleFinalAction()"
             />
       </div>
 
@@ -46,8 +46,9 @@
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, ref, watch } from 'vue';
+import { computed, defineAsyncComponent, ref, watch } from 'vue';
 import { PlayState, choices, choicesExtended, getPlayResult, getRandomChoice, type Choice } from './helpers/gameModel';
+import { winMeme, winMemeNextLevel, lostMeme, winIconPaths, iconPaths } from './assets/sources';
 import { getFooBar } from './helpers/foobar'
 import GameControls from './components/GameControls.vue';
 import GameRoundChoices from './components/GameRoundChoices.vue';
@@ -57,24 +58,55 @@ const GameFinalResult = defineAsyncComponent(
   () => import('./components/GameFinalResult.vue'),
 );
 
-const choice1 = ref<Choice>();
-const choice2 = ref<Choice>();
-const player1Pts = ref(0);
-const player2Pts = ref(0);
-const player1Wins = ref(false);
-const player2Wins = ref(false);
+const choice1 = ref<Choice>(); //first player choice
+const choice2 = ref<Choice>(); //second player choice
+const player1Pts = ref(0); // first player total points for the current game
+const player2Pts = ref(0); // second player total points for the current game
+const player1Wins = ref(false); // first player total wins
+const player2Wins = ref(false); // second player total wins
 
-const targetPoints = 3;
-const gameEnded = ref(false);
-const gameLevel = ref(1);
-const showFooBarComponent = ref(false);
+const targetPoints = 3; // total points to clear each level
+const gameEnded = ref(false); // determines if level is finished
+const gameLevel = ref(1); // level number
+const showFooBarComponent = ref(false); // allows foobar component to diplay
+
+const finalButtonTitle = ref<string>(""); // button label after level is cleared
+const finalImageSrc = ref<string>(""); // image to show after level is cleared
+
+// Sets the icon for the first player
+const leftIconSrc = computed(()=> {
+  if (choice1.value) return player1Wins.value ? winIconPaths[choice1.value] : iconPaths[choice1.value];
+  else return undefined;
+})
+// Sets the icon for the second player
+const rightIconSrc = computed(()=> {
+  if (choice2.value) return player2Wins.value ? winIconPaths[choice2.value] : iconPaths[choice2.value];
+  else return undefined;
+})
 
 /**
- * Watch when a player wins the game
+ * Watches when a player wins the game
  */
 watch([player1Pts, player2Pts], ([pt1, pt2]) => {
   gameEnded.value = pt1 >= targetPoints || pt2 >= targetPoints ? true : false;
+
+    // Round is lost so returning back to first level
+    if (player1Pts.value < player2Pts.value){
+      finalButtonTitle.value = "Riprova";
+      finalImageSrc.value = lostMeme;
+  }
+  // Round is won and game is not ended yet
+   else if (player1Pts.value > player2Pts.value && gameLevel.value === 1){
+    finalButtonTitle.value = "Livello Successivo";
+    finalImageSrc.value = winMemeNextLevel;
+  }
+  // Round is won and game is finished
+  else if (player1Pts.value > player2Pts.value && gameLevel.value === 2){
+    finalButtonTitle.value = "Riscatta il premio";
+    finalImageSrc.value = winMeme;
+  }
 }, {immediate: true});
+
 
 
 /**
@@ -137,6 +169,23 @@ function restartGame(){
   resetGame();
 }
 
+/**
+ * Handles the action coming from the result component based on game state
+ */
+function handleFinalAction(){
+  // Round is lost so returning back to first level
+  if (player1Pts.value < player2Pts.value){
+    restartGame();
+  }
+  // Round is won and game is not ended yet
+  else if (player1Pts.value > player2Pts.value && gameLevel.value === 1){
+    goToNextLevel();
+  }
+  // Round is won and game is finished
+  else if (player1Pts.value > player2Pts.value && gameLevel.value === 2){
+    showFooBarComponent.value = true;
+  }
+}
 </script>
 
 <style scoped>

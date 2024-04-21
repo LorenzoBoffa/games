@@ -1,32 +1,25 @@
 <template>
   <div style="text-align: center;">
-    <h1>{{props.player1Points > props.player2Points ? 'Hai vinto!' : 'Oh no! Hai perso!'}}</h1>
-      <h2>{{ `${props.player1Points} - ${props.player2Points}`}} </h2>
-      <img :src="props.player1Points > props.player2Points ? (props.isGameFinished ? winMeme : winMemeNextLevel) : lostMeme"></img>
+    <h1>{{props.title}}</h1>
+      <h2>{{ props.subtitle}} </h2>
+      <img :src="props.imageSrc"></img>
         <div class="buttons">  
-          <button v-if="props.player1Points < props.player2Points" @click="emit('restartGame')" class="primary-button">
-            <h2>Riprova</h2>
-          </button>
-          <button v-if="props.player1Points > props.player2Points && !isGameFinished" @click="emit('nextLevel')" class="primary-button">
-            <h2>Livello Successivo</h2>
-          </button>
-          <button v-if="props.player1Points > props.player2Points && isGameFinished" @click="emit('getFooBar')" class="primary-button ">
-            <h1>Riscatta il premio</h1>
+          <button @click="emit('handleAction')" class="primary-button">
+            <h2>{{ props.buttonTitle }}</h2>
           </button>
         </div>
       </div>
 </template>
 
 <script setup lang="ts">
-import { winMeme, winMemeNextLevel, lostMeme } from '@/assets/sources';
-
 const props = defineProps<{
-    player1Points: number;
-    player2Points: number;
-    isGameFinished: boolean;
+    title: string;
+    subtitle: string;
+    buttonTitle: string;
+    imageSrc: string;
   }>();
 
-const emit = defineEmits(['restartGame', 'nextLevel', 'getFooBar']);
+const emit = defineEmits(['handleAction']);
 
 </script>
 

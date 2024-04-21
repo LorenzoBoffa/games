@@ -2,8 +2,8 @@
 <div class="results-container">
       <div class="player">
         <p style="margin: 0">Giocatore 1</p>
-        <div :class="{ 'card-choice': true, 'win': props.player1Wins }">
-          <img v-if="props.choice1" :src="props.player1Wins ? winIconPaths[props.choice1] : iconPaths[props.choice1]" class="icon" /> 
+        <div :class="{ 'card-choice': true, 'win': props.leftHighlighted }">
+          <img v-if="props.leftIconSrc" :src="props.leftIconSrc" class="icon" /> 
         </div>
         <h3 class="player-score">{{ props.player1Points }} pt</h3>
       </div>
@@ -12,28 +12,26 @@
       
       <div class="player">
         <p style="margin: 0">Avversario</p>
-        <div :class="{ 'card-choice': true, 'win': props.player2Wins }">
-          <img v-if="props.choice2 ":src="props.player2Wins ? winIconPaths[props.choice2] : iconPaths[props.choice2]" class="icon" /> 
+        <div :class="{ 'card-choice': true, 'win': props.rightHighlighted }">
+          <img v-if="props.rightIconSrc" :src="props.rightIconSrc" class="icon" /> 
         </div>
         <h3 class="player-score">{{ props.player2Points }} pt</h3>
       </div>
     </div>
 
     <div class="results-container">
-    <h2 v-if="choice1 && choice2" > {{ !props.player1Wins && !props.player2Wins ? 'Pari!' : props.player1Wins ? 'Vinto!' : 'Perso' }} </h2>
+    <h2 v-if="props.leftIconSrc && props.rightIconSrc" > {{ props.playStateMessage }} </h2>
     <h2 v-else> Scegli una mossa </h2>
   </div>
   </template>
   
-  <script setup lang="ts">
-  import type { Choice } from '@/helpers/gameModel';
-  import { iconPaths, winIconPaths } from '@/assets/sources';
-  
+  <script setup lang="ts">  
   const props = defineProps<{
-    choice1: Choice | undefined;
-    choice2: Choice | undefined;
-    player1Wins: boolean;
-    player2Wins: boolean;
+    rightIconSrc: string | undefined;
+    leftIconSrc: string | undefined;
+    rightHighlighted : boolean;
+    leftHighlighted : boolean;
+    playStateMessage: string;
     player1Points: number;
     player2Points: number;
   }>();
