@@ -2,13 +2,12 @@
 
 A simple rock, paper, scissors game with an extension to include lizard and spock and a surprise at the end.
 
+https://prod--gleaming-licorice-5af2e6.netlify.app/
+
 ## Project Setup
 
 ```sh
 cd games
-```
-
-```sh
 npm install
 ```
 
@@ -18,14 +17,12 @@ npm install
 npm run dev
 ```
 
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
-
 ### Run Unit Tests with [Vitest](https://vitest.dev/)
 
 ```sh
 npm run test:unit
 ```
+### Navigating the project
+Navigate to: "games/src/helpers" to find:
+- foobar.ts: containing methods for exercise 1.
+- gameModel.ts: containing basic definitions for exercise 2.
