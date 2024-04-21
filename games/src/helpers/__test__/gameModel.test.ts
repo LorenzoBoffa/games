@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { choicesExtended, PlayState, getPlayResult, type Choice } from "../gameModel";
+import { choicesExtended, PlayState, getPlayResult, type Choice, getRandomChoice, choices } from "../gameModel";
 
 
 describe("Test partite pari", ()=>{
@@ -54,5 +54,38 @@ describe("Test partite perse", ()=>{
             expect(result).toBe(PlayState.Lose);
         });
     });
+    
+})
+
+
+describe("Test scelte random per il gioco base", ()=>{
+    const randomChoices: Choice[] = [];
+    for (let ii=0; ii<1000; ii++){
+        randomChoices.push(getRandomChoice());
+    }
+    
+    const uniqueRandomChoices = [...new Set(randomChoices)];
+
+    test("Numero corretto di scelte", ()=>
+        expect(randomChoices.length).toBe(1000));
+
+    test("Contiene le scelte corrette", ()=>
+        expect(uniqueRandomChoices.sort()).toEqual(choices.sort()));
+    
+})
+
+describe("Test scelte random per il gioco esteso", ()=>{
+    const randomChoices: Choice[] = [];
+    for (let ii=0; ii<1000; ii++){
+        randomChoices.push(getRandomChoice(choicesExtended));
+    }
+    
+    const uniqueRandomChoices = [...new Set(randomChoices)];
+
+    test("Numero corretto di scelte", ()=>
+        expect(randomChoices.length).toBe(1000));
+
+    test("Contiene le scelte corrette", ()=>
+        expect(uniqueRandomChoices.sort()).toEqual(choicesExtended.sort()));
     
 })

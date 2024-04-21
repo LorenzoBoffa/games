@@ -28,17 +28,17 @@ const weakerChoices: Record<Choice, Choice[]> = {
  * @returns a random game choice
  */
 export function getRandomChoice(availableChoices: Choice[] = choices):Choice {
-    return availableChoices[Math.floor(Math.random()*(choices.length))];
+    return availableChoices[Math.floor(Math.random()*(availableChoices.length))];
 }
 
 /**
  * Calculate result for a single play given two choices
- * @param choice1 player 1 choice, computed as random if not provided
- * @param choice2 player 1 choice, computed as random if not provided
+ * @param choice1 player 1 choice
+ * @param choice2 player 1 choice
  * @param weakerChoicesRecord record mapping choiches to their weaker choices. Default one are the classic rules.
  * @returns 
  */
-export function getPlayResult(choice1: Choice = getRandomChoice(), choice2: Choice = getRandomChoice(), weakerChoicesRecord = weakerChoices): PlayState{   
+export function getPlayResult(choice1: Choice, choice2: Choice, weakerChoicesRecord = weakerChoices): PlayState{   
     if (choice1 === choice2) return PlayState.Draw
     else if (weakerChoicesRecord[choice1].includes(choice2)) return PlayState.Win
     else return PlayState.Lose

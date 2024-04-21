@@ -116,8 +116,8 @@ watch([player1Pts, player2Pts], ([pt1, pt2]) => {
  * @param choice choice of player 1. Player 2 is considered to be a computer
  */
 function playRound(choice: Choice | undefined) {
-  if (!choice) choice = getRandomChoice();
-  const opponentChoice = getRandomChoice(); 
+  if (!choice) choice = gameLevel.value === 2 ? getRandomChoice(choicesExtended) : getRandomChoice();
+  const opponentChoice = gameLevel.value === 2 ? getRandomChoice(choicesExtended) : getRandomChoice(); 
 
   choice1.value = choice;
   choice2.value = opponentChoice;
